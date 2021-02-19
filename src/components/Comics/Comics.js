@@ -12,15 +12,15 @@ import {
   ROOT_INDEX
 } from '../../const/root';
 import classes from './Comics.css';
+import Error from '../Error/Error'
 
 class Comics {
-    async render() {
-        const data = await getDataApi.getData(API_URL + URL_COMICS);
 
+    renderComics(data) {
         let htmlContent = '';
 
         data.forEach(({ id, title, thumbnail: { path, extension } }) => {
-            
+
             if (path.lastIndexOf(IMG_NOT_AVAILABLE) === -1) {
                 const uri = API_URL + URL_COMICS + '/' + id + '/' + URL_CHARACTERS;
                 const imgSrc = path + '/' + IMG_STANDARD_XLARGE + '.' + extension;
@@ -39,9 +39,16 @@ class Comics {
                 ${htmlContent}
             </ul>
         `;
-    
-        ROOT_INDEX.innerHTML = htmlWrapper;
+
+        ROOT_INDEX.innerHTML = htmlWrapper;        
     }
+
+    async render() {
+        const data = await getDataApi.getData(API_URL + URL_COMICS);
+
+        data ? this.renderComics(data) : Error.render();
+    }
+
 
     eventListener() {
         document.querySelectorAll('.comics__item').forEach(element => {
