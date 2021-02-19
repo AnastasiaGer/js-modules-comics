@@ -13,6 +13,8 @@ import {
 } from '../../const/root';
 import classes from './Comics.css';
 import Error from '../Error/Error'
+import Characters from '../Characters/Characters'
+
 
 class Comics {
 
@@ -55,7 +57,7 @@ class Comics {
             const uri = element.getAttribute('data-uri');
 
             element.addEventListener('click', () => {
-                console.log(uri);
+                Characters.render(uri);
             })
         })
     }
