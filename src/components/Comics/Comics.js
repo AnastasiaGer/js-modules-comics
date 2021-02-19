@@ -4,54 +4,54 @@ import {
   URL_CHARACTERS,
   IMG_STANDARD_XLARGE,
   IMG_NOT_AVAILABLE
-} from '../../const/api'
+} from '../../const/api';
 import {
   getDataApi
-} from '../../utils/getDataApi'
+} from '../../utils/getDataApi';
 import {
   ROOT_INDEX
-} from '../../const/root'
-import './Comics.css'
+} from '../../const/root';
+import classes from './Comics.css';
 
 class Comics {
-  async render() {
-      const data = await getDataApi.getData(API_URL + URL_COMICS);
+    async render() {
+        const data = await getDataApi.getData(API_URL + URL_COMICS);
 
-      let htmlContent = '';
+        let htmlContent = '';
 
-      data.forEach(({ id, title, thumbnail: { path, extension } }) => {
-          
-          if (path.lastIndexOf(IMG_NOT_AVAILABLE) === -1) {
-              const uri = API_URL + URL_COMICS + '/' + id + '/' + URL_CHARACTERS;
-              const imgSrc = path + '/' + IMG_STANDARD_XLARGE + '.' + extension;
+        data.forEach(({ id, title, thumbnail: { path, extension } }) => {
+            
+            if (path.lastIndexOf(IMG_NOT_AVAILABLE) === -1) {
+                const uri = API_URL + URL_COMICS + '/' + id + '/' + URL_CHARACTERS;
+                const imgSrc = path + '/' + IMG_STANDARD_XLARGE + '.' + extension;
 
-              htmlContent += `
-                  <li class="comics__item" data-uri="${uri}">
-                      <span class="comics__name">${title}</span>
-                      <img class="comics__img" src="${imgSrc}" />
-                  </li>
-              `;
-          }
-      });
+                htmlContent += `
+                    <li class="comics__item ${classes.comics__item}" data-uri="${uri}">
+                        <span class="${classes.comics__name}">${title}</span>
+                        <img class="img-contain ${classes.comics__img}" src="${imgSrc}" />
+                    </li>
+                `;
+            }
+        });
 
-      const htmlWrapper = `
-          <ul class="comics__container">
-              ${htmlContent}
-          </ul>
-      `;
-  
-      ROOT_INDEX.innerHTML = htmlWrapper;
-  }
+        const htmlWrapper = `
+            <ul class="${classes.comics__container}">
+                ${htmlContent}
+            </ul>
+        `;
+    
+        ROOT_INDEX.innerHTML = htmlWrapper;
+    }
 
-  eventListener() {
-      document.querySelectorAll('.comics__item').forEach(element => {
-          const uri = element.getAttribute('data-uri');
+    eventListener() {
+        document.querySelectorAll('.comics__item').forEach(element => {
+            const uri = element.getAttribute('data-uri');
 
-          element.addEventListener('click', () => {
-              console.log(uri);
-          })
-      })
-  }
+            element.addEventListener('click', () => {
+                console.log(uri);
+            })
+        })
+    }
 }
 
 export default new Comics();
